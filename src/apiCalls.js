@@ -13,21 +13,20 @@ const roomsData = () =>  fetchData('rooms')
 const bookingsData = () => fetchData('bookings')
 
 const postBooking = (data) => {
-
-return fetch(`http://localhost:3001/api/v1/bookings`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(data),
-})
-  .then(response => {
-    return errorHandling(response);
+  return fetch(`http://localhost:3001/api/v1/bookings`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
   })
+    .then(response => {
+      return errorHandling(response);
+    })
 }
 
 const errorHandling = (response) => {
-  if(!response.ok){
+  if (!response.ok) {
     throw "We had trouble booking that room, please try again."
   }
   return response.json()

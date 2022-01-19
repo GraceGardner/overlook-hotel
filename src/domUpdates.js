@@ -16,6 +16,7 @@ const suite = document.getElementById('suite');
 const residentialSuite = document.getElementById('residentialSuite');
 const checkAvailabilityButton = document.getElementById('checkAvailability');
 const availabilityForDate = document.getElementById('availabilityForDate');
+const roomAvailability = document.getElementById('roomAvailability');
 const roomDisplay = document.getElementById('roomDisplay');
 const bookingForm = document.getElementById('bookingForm');
 const bookedMessage = document.getElementById('bookedMessage');
@@ -31,15 +32,15 @@ let selectedDate;
 let selectedRoomTypes = [];
 
 const hide = (toHide) => {
-toHide.forEach(element => {
-  element.classList.add('hidden');
-})
+  toHide.forEach(element => {
+    element.classList.add('hidden');
+  })
 };
 
 const show = (toShow) => {
-toShow.forEach(element => {
-  element.classList.remove('hidden');
-})
+  toShow.forEach(element => {
+    element.classList.remove('hidden');
+  })
 };
 
 const showHide = (toShow, toHide) => {
@@ -49,26 +50,29 @@ const showHide = (toShow, toHide) => {
 
 const displayBookings = () => {
   console.log(hotel.currentCustomer.bookings)
-  userBookings.innerHTML = hotel.currentCustomer.bookings.reduce((acc, booking) => {
-    acc += `<div class="reservation">
-              <h3>Reservation for ${booking.date}</h3><br>
-              <p>Room Number : ${booking.roomNumber}</p><br>
-              <p>Reservation ID : ${booking.id}</p><br>
-            </div>`
-    return acc
-  }, "")
+  userBookings.innerHTML = hotel.currentCustomer.bookings.reduce(
+    (acc, booking) => {
+      acc += `<div class="reservation">
+                <h3>Reservation for ${booking.date}</h3><br>
+                <p>Room Number : ${booking.roomNumber}</p><br>
+                <p>Reservation ID : ${booking.id}</p><br>
+              </div>`
+      return acc
+    }, "")
 };
 
 const displayTotal = () => {
-  userTotal.innerText = `Total Spent with Us: $${hotel.currentCustomer.total.toFixed(2)}`
+  userTotal.innerText = `
+    Total Spent with Us: $${hotel.currentCustomer.total.toFixed(2)}
+  `
 };
 
 const assignSelectedData = () => {
   selectedDate = date.value;
   let roomTypes = [singleRoom, juniorSuite, suite, residentialSuite]
   selectedRoomTypes = roomTypes.reduce((acc, type) => {
-    if(type.checked){
-    acc.push(type.value);
+    if (type.checked) {
+      acc.push(type.value);
     }
     return acc
   }, [])
@@ -85,17 +89,19 @@ const clearForm = () => {
 
 
 const displayRooms = () => {
-      availabilityForDate.innerText = `Rooms available for ${hotel.selectedDate}`
-      roomAvailability.innerHTML = hotel.availableRooms.reduce((acc, room) => {
-        acc += `<div class="available-rooms">
-                  <h3>Type of room: ${room.roomType}</h3>
-                  <p>Beds: ${room.numBeds} ${room.bedSize}</p>
-                  <p>Bidet: ${room.bidet}</p>
-                  <p>Room ${room.number} is ${room.costPerNight.toFixed(2)} per night</p>
-                  <button class="book-button" value="${room.number}">Book Room</button>
-                </div>`
-        return acc
-      }, '')
+  availabilityForDate.innerText = `Rooms available for ${hotel.selectedDate}`
+  roomAvailability.innerHTML = hotel.availableRooms.reduce((acc, room) => {
+    acc += `
+      <div class="available-rooms">
+        <h3>Type of room: ${room.roomType}</h3>
+        <p>Beds: ${room.numBeds} ${room.bedSize}</p>
+        <p>Bidet: ${room.bidet}</p>
+        <p>Room ${room.number} is ${room.costPerNight.toFixed(2)} per night</p>
+        <button class="book-button" value="${room.number}">Book Room</button>
+      </div>
+    `
+    return acc
+  }, '')
 }
 
 
@@ -104,9 +110,9 @@ const createButtons = () => {
   bookingButtons.forEach(button => {
     button.addEventListener('click', (event) => {
       bookRoom(event)
-      .then(data => {
-        showHide([bookedMessage], [bookingForm, roomDisplay])
-      })
+        .then(data => {
+          showHide([bookedMessage], [bookingForm, roomDisplay])
+        })
     })
   })
 }
