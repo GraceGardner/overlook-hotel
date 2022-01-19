@@ -38,13 +38,11 @@ const bookRoom = (event) => {
     date: hotel.selectedDate.replaceAll('-', '/'),
     roomNumber: parseInt(event.target.value),
   }
-  console.log(data)
   return postBooking(data)
   .then(data => {
     hotel.bookRoom(data.newBooking)
   })
-  .catch(error => console.log(error))
-  // .catch(error => domUpdates.displayError(error))
+  .catch(error => domUpdates.displayErrorModal(error))
 }
 
 const login = (event) => {
@@ -52,8 +50,12 @@ const login = (event) => {
   setUserId()
   if(customerId < 50 && 0 < customerId && passwordInput.value === 'overlook2021'){
     loadPage(customerId)
+  } else {
+    domUpdates.displayErrorModal("Incorrect username or password, Please Try Again")
   }
 }
+
+
 
 loginButton.addEventListener('click', login)
 
