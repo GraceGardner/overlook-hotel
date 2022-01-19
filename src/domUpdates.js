@@ -16,12 +16,13 @@ const suite = document.getElementById('suite');
 const residentialSuite = document.getElementById('residentialSuite');
 const checkAvailabilityButton = document.getElementById('checkAvailability');
 const availabilityForDate = document.getElementById('availabilityForDate');
-const fierceApology = document.getElementById('fierceApology');
 const roomDisplay = document.getElementById('roomDisplay');
 const bookingForm = document.getElementById('bookingForm');
 const bookedMessage = document.getElementById('bookedMessage');
 const bookingPage = document.getElementById('bookingPage');
-const pleaseMakeSelection = document.getElementById('pleaseMakeSelection');
+const modal = document.getElementById('modal');
+const modalText = document.getElementById('modalText');
+const close = document.getElementById("close");
 
 let bookingButtons;
 
@@ -81,23 +82,7 @@ const clearForm = () => {
   })
 }
 
-const checkRoomAvailability = () => {
-  event.preventDefault()
-  assignSelectedData()
-  if(selectedDate && selectedRoomTypes.length > 0){
-    hotel.filterRooms(selectedRoomTypes, selectedDate)
-    if(hotel.availableRooms.length > 0){
-      displayRooms()
-      createButtons()
-      showHide([roomDisplay], [bookingForm, fierceApology, bookedMessage,pleaseMakeSelection])
-    } else {
-      clearForm();
-      showHide([fierceApology, bookingForm], [bookedMessage, roomDisplay, pleaseMakeSelection])
-    }
-  } else {
-    showHide([fierceApology, bookingForm, pleaseMakeSelection], [bookedMessage, roomDisplay])
-  }
-}
+
 
 const displayRooms = () => {
       availabilityForDate.innerText = `Rooms available for ${hotel.selectedDate}`
@@ -120,7 +105,7 @@ const createButtons = () => {
     button.addEventListener('click', (event) => {
       bookRoom(event)
       .then(data => {
-        showHide([bookedMessage], [bookingForm, fierceApology,roomDisplay, pleaseMakeSelection])
+        showHide([bookedMessage], [bookingForm, roomDisplay])
       })
     })
   })
@@ -146,10 +131,45 @@ showProfile() {
 
 showAvailableBookings() {
   clearForm();
-  showHide([bookingSection, bookingForm, bookingPage], [loginDisplay, usersProfile, bookedMessage, pleaseMakeSelection])
+  showHide([bookingSection, bookingForm, bookingPage], [loginDisplay, usersProfile, bookedMessage])
+},
+
+displayErrorModal(message) {
+  show([modal])
+  modalText.innerText = `${message}`
 },
 
 };
+
+const checkRoomAvailability = () => {
+  event.preventDefault()
+  assignSelectedData()
+  if(selectedDate && selectedRoomTypes.length > 0){
+    hotel.filterRooms(selectedRoomTypes, selectedDate)
+    if(hotel.availableRooms.length > 0){
+      displayRooms()
+      createButtons()
+      showHide([roomDisplay], [bookingForm, bookedMessage])
+    } else {
+      clearForm();
+      domUpdates.displayErrorModal("Oh No! We are all booked on that date for that room type. Please select another date or room type.")
+      showHide([bookingForm], [bookedMessage, roomDisplay])
+    }
+  } else {
+    domUpdates.displayErrorModal("Oh No! Please select a room type and date")
+    showHide([bookingForm], [bookedMessage, roomDisplay])
+  }
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    hide([modal])
+  }
+}
+
+close.addEventListener('click', event => {
+    hide([modal])
+})
 
 profileButton.addEventListener('click', domUpdates.showProfile);
 bookingButton.addEventListener('click', domUpdates.showAvailableBookings);

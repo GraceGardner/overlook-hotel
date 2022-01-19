@@ -28,7 +28,7 @@ return fetch(`http://localhost:3001/api/v1/bookings`, {
 
 const errorHandling = (response) => {
   if(!response.ok){
-    throw "response"
+    throw "We had trouble booking that room, please try again."
   }
   return response.json()
 }
