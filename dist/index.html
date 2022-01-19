@@ -14,7 +14,7 @@
       <button class="header-button hidden" id="profileButton">My Profile</button>
     </section>
     <section class="logged-in-as">
-      <h2 id="loggedInAs" class='hidden'>You are logged in as:</h2>
+      <h2 id="loggedInAs" class='hidden'>You are logged in as:  </h2>
       <h3 id="loggedInName"></h3>
     </section>
   </header>
@@ -53,9 +53,13 @@
       </section>
     </section>
     <section class="users-profile hidden" id="usersProfile">
-      <h2>Your Bookings</h2>
-      <section class="users-bookings" id="userBookings"></section>
-      <h3 id="userTotal"></h3>
+      <section class="profile-headers">
+        <h3 class="profile-booking-header">Your Bookings</h3>
+        <h3 id="userTotal" class="user-total"></h3>
+      </section>
+      <section class="user-all-bookings">
+        <section class="users-bookings" id="userBookings"></section>
+      </section>
     </section>
     <div id="modal" class="modal hidden">
       <div class="modal-content">

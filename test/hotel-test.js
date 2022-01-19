@@ -78,7 +78,7 @@ describe('Hotel', () => {
 
     it("Should show rooms available for a given date", () => {
         overlook.findAvailableRooms("2022/02/16");
-        expect(overlook.availableRooms).to.have.lengthOf(7);
+        expect(overlook.availableRooms).to.have.lengthOf(8);
     })
 
 
@@ -90,7 +90,13 @@ describe('Hotel', () => {
     it("Should be able to create new bookings", () => {
           overlook.filterRooms(["residential suite"],"2022/02/16");
           overlook.setCurrentCustomer(overlook.findCustomer('customer1', 'overlook2021'));
-          overlook.bookRoom(1);
+          let bookingData = {
+              id: '12345',
+              userID: '123',
+              date: "2022/02/16",
+              roomNumber: 1
+            }
+          overlook.bookRoom(bookingData);
         expect(overlook.bookings).to.have.lengthOf(6);
     })
 })
